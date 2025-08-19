@@ -1,0 +1,72 @@
+[
+  {
+    "index": 2,
+    "user": "facility",
+    "response": "",
+    "timestamp": "2025-08-19T11:14:37.500183",
+    "feedback": null
+  },
+  {
+    "index": 3,
+    "user": "facility",
+    "response": "",
+    "timestamp": "2025-08-19T11:14:44.771604",
+    "feedback": null
+  },
+  {
+    "index": 4,
+    "user": "facility",
+    "response": "",
+    "timestamp": "2025-08-19T11:14:45.401826",
+    "feedback": null
+  },
+  {
+    "index": 5,
+    "user": "facility",
+    "response": "",
+    "timestamp": "2025-08-19T11:14:59.880167",
+    "feedback": null
+  },
+  {
+    "index": 6,
+    "user": "facility",
+    "response": "",
+    "timestamp": "2025-08-19T11:15:02.794930",
+    "feedback": null
+  },
+  {
+    "index": 7,
+    "user": "facility",
+    "response": "",
+    "timestamp": "2025-08-19T11:15:03.643138",
+    "feedback": null
+  },
+  {
+    "index": 8,
+    "user": "facility",
+    "response": "",
+    "timestamp": "2025-08-19T11:15:33.888929",
+    "feedback": null
+  },
+  {
+    "index": 10,
+    "user": "What RTU?",
+    "response": "",
+    "timestamp": "2025-08-19T11:16:34.659348",
+    "feedback": null
+  },
+  {
+    "index": 11,
+    "user": "What RTU?",
+    "response": "",
+    "timestamp": "2025-08-19T11:18:04.661576",
+    "feedback": null
+  },
+  {
+    "index": 11,
+    "user": "What RTU?",
+    "response": "I'm happy to help you understand what an RTU is!\n\nFrom the context provided, it appears that you're looking for information about a Remote Terminal Unit (RTU). \n\nAccording to the text, an RTU is \"a device that collects data from data acquisition equipment and transmits real-time values to the main system over a wired or wireless network to be stored and processed by the UIS.\"\n\nFor more detailed information on RTUs, I recommend checking out the Facilities Overview page at https://softwaredocs.weatherford.com/cygnet/94/Content/Topics/Facilities/Facilities Overview.htm.",
+    "timestamp": "2025-08-19T11:20:17.366425",
+    "feedback": "good"
+  }
+]
