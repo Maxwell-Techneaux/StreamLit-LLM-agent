@@ -106,8 +106,9 @@ class DocumentParser:
 
     # write temporary memory file
     def save_memory_json(self, memory_list):
+        filtered_memory_list = [idx for idx in memory_list if idx.get("feedback") == "good"]
         with open(MEMORY_FILE, "w") as f:
-            json.dump(memory_list, f, indent=2)
+            json.dump(filtered_memory_list, f, indent=2)
 
     def get_url_name(self, url: str) -> str:
         if not url.endswith(".aspx"):

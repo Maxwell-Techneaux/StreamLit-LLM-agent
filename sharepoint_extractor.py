@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import msal
 from datetime import datetime, timezone
 from playwright.sync_api import sync_playwright
-from urllib.parse import urlparse, urlunparse, urljoin
+from urllib.parse import urlparse, urlunparse, urljoin, quote
 from bs4 import BeautifulSoup
 from LlamaFolder.document_parser import DocumentParser
 from langchain_core.documents import Document 
@@ -81,8 +81,30 @@ def extract_gloss_html(html: str):
 
                 # otherwise, build it from the base url
                 elif not parsed.netloc:
-                    a_tag['href'] = urljoin(base_url, href)
-                
+                    abs_url = urljoin(base_url, href)
+                    parsed_abs = urlparse(abs_url)
+                    encoded_path = quote(parsed_abs.path)
+                    new_url = urlunparse((
+                        parsed_abs.scheme,
+                        parsed_abs.netloc,
+                        encoded_path,
+                        parsed_abs.params,
+                        parsed_abs.query,
+                        parsed_abs.fragment
+                    ))
+                    a_tag['href'] = new_url
+                    #a_tag['href'] = urljoin(base_url, href)
+                else:
+                    encoded_path = quote(parsed.path)
+                    new_url = urlunparse((
+                        parsed.scheme,
+                        parsed.netloc,
+                        encoded_path,
+                        parsed.params,
+                        parsed.query,
+                        parsed.fragment
+                    ))
+                    a_tag['href'] = new_url
             # basic text for definition, including hyperlink attribute where available.   
             current_def.append(str(elem))
 
@@ -199,7 +221,7 @@ def get_last_index_time():
     if os.path.exists(EnvironVariables.LAST_INDEX_FILE_PATH):
         with open(EnvironVariables.LAST_INDEX_FILE_PATH, "r") as f:
             return datetime.fromisoformat(f.read().strip())
-    return datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+    return datetime(1970, 1, 1, tzinfo=timezone.utc)
 
 
 # update txt file with current time after pulling pages
@@ -269,7 +291,7 @@ def page_getter(token, site, time):
                 for step_text, image_url in step_data:
                     # each page's source and modified date are added as metadata along with the list of image URLs
                     metadata = {
-                        "source": normalize_url(url),
+                        "source": normalize_url(url).replace(" ", "%20"),
                         "last_modified": modified.isoformat(),
                         "images": [image_url] if image_url else [] 
                     }

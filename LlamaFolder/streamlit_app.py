@@ -66,7 +66,7 @@ class StreamlitApp:
 
         - Answer like a friendly expert or trainer.
         - Refer to the steps only when needed.
-        - Cite the source used (source URL)
+        - Cite the source used (source URL).                                                    
         - Use the glossary to clarify terminology or concepts.
         - Do NOT repeat full step lists or attempt to number steps.
         - Any instructions taken from the CONTEXT should be stripped of their step number.
@@ -159,6 +159,7 @@ class StreamlitApp:
         # separate retriever for comparing inputs to previously saved good responses
         st.session_state.memory_retriever = memory_retriever
 
+    # compare INPUT to list of SOURCES
     def rerank_documents(self, prompt: str, docs: list):
         scored_docs = []
         for doc in docs:
@@ -166,6 +167,7 @@ class StreamlitApp:
             page_url = source
             score = difflib.SequenceMatcher(None, prompt.lower(), page_url).ratio()
             scored_docs.append((score, doc))
+        
         if not scored_docs:
             return [], 0.0  # Avoid UnboundLocalError
         
@@ -173,12 +175,14 @@ class StreamlitApp:
         sorted_docs = [doc for score, doc in sorted(scored_docs, key=lambda x: x[0], reverse=True)]
         return sorted_docs, score
     
+    # compare previous INPUT to list of INPUTs
     def rerank_memory(self, prompt: str, docs: list):
         scored_docs = []
         for doc in docs:
             previous_prompt = doc.metadata['user']
             score = difflib.SequenceMatcher(None, prompt.lower(), previous_prompt).ratio()
             scored_docs.append((score, doc))
+
         if not scored_docs:
             return [], 0.0  # Avoid UnboundLocalError
         
@@ -200,7 +204,6 @@ class StreamlitApp:
     def show_intro(self):
         # difference in time between pressing start and the program activating
         print("Load time (s): ", (time() - self.start_time))
-        #st.image(image=r"C:\Users\maxwell.boutte\Techneaux Interns\Enterprise Services Logo - Back (RGB).png",width=500)
         
         st.title("🟧 🟧 Welcome ES Team! 🟧 🟧")
 
@@ -216,7 +219,7 @@ class StreamlitApp:
         if st.session_state.get("AI_response_generated"):
             if new_prompt:  # If new input has arrived
                 st.session_state.AI_response_generated = False
-
+        # replace previous prompt and increment counter
         if new_prompt:
             st.session_state.prompt = new_prompt
             st.session_state.i += 1
@@ -256,7 +259,7 @@ class StreamlitApp:
 
             # Run rough similarity
             quicktriever = st.session_state.vector_store.as_retriever(search_type="similarity_score_threshold",search_kwargs={"k": 10, "score_threshold": 0.40})
-            if not st.session_state.AI_selected:
+            if True:#:
                 #retrieve and rerank relevant documents
                 quick_docs = quicktriever.invoke(st.session_state.prompt)
                 sorted_docs, scores = self.rerank_documents(st.session_state.prompt, quick_docs)
@@ -385,13 +388,13 @@ class StreamlitApp:
                     st.session_state.just_added_response = st.session_state.i
                     
                 # insert q/a metadata into buffer (won't be saved)
-                st.session_state.conversationBufferMemory.append({
-                        "index": st.session_state.i,
-                        "user": st.session_state.prompt,
-                        "response": full_response,
-                        "timestamp": datetime.now().isoformat(),
-                        "feedback": None
-                    })
+                # st.session_state.conversationBufferMemory.append({
+                #         "index": st.session_state.i,
+                #         "user": st.session_state.prompt,
+                #         "response": full_response,
+                #         "timestamp": datetime.now().isoformat(),
+                #         "feedback": None
+                #     })
                 # ancillery functions are enabled after first run
                 st.session_state.started = True
         
